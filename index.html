@@ -1,0 +1,213 @@
+<!-- file: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hawaiian Flowers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8f5;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00695c;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .flower {
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .flower:hover {
+      transform: scale(1.05);
+      border-color: #00695c;
+    }
+
+    .flower canvas {
+      width: 100%;
+      height: 100px;
+      background-color: #e0f7fa;
+      border-radius: 5px;
+      transition: transform 1s ease;
+    }
+
+    .spin {
+      transform: rotate(360deg);
+    }
+
+    .flower-name {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #004d40;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00695c;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .back-button:hover {
+      background-color: #004d40;
+    }
+
+    .info-page {
+      display: none;
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .info-page h2 {
+      color: #00695c;
+    }
+
+    .info-page p {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Hawaiian Flowers</h1>
+
+  <!-- Main grid of flower icons -->
+  <div id="main-page" class="grid">
+    <div class="flower" onclick="spinAndShow('puakenikeni')">
+      <canvas id="puakenikeni"></canvas>
+      <div class="flower-name">Puakenikeni</div>
+    </div>
+    <div class="flower" onclick="spinAndShow('pikake')">
+      <canvas id="pikake"></canvas>
+      <div class="flower-name">Pikake</div>
+    </div>
+    <div class="flower" onclick="spinAndShow('birdofparadise')">
+      <canvas id="birdofparadise"></canvas>
+      <div class="flower-name">Bird of Paradise</div>
+    </div>
+    <div class="flower" onclick="spinAndShow('hibiscus')">
+      <canvas id="hibiscus"></canvas>
+      <div class="flower-name">Hibiscus</div>
+    </div>
+    <div class="flower" onclick="spinAndShow('naupaka')">
+      <canvas id="naupaka"></canvas>
+      <div class="flower-name">Naupaka</div>
+    </div>
+    <div class="flower" onclick="spinAndShow('plumeria')">
+      <canvas id="plumeria"></canvas>
+      <div class="flower-name">Plumeria</div>
+    </div>
+  </div>
+
+  <!-- Info pages for each flower -->
+  <div id="puakenikeni-page" class="info-page">
+    <h2>Puakenikeni</h2>
+    <p>Puakenikeni is a fragrant flower often used in Hawaiian leis. Its name means “ten-cent flower” because it was once sold for ten cents each. The blossoms start white and turn orange as they age.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <div id="pikake-page" class="info-page">
+    <h2>Pikake</h2>
+    <p>Pikake, also known as jasmine, is a small white flower with a sweet scent. It is a favorite for making leis and symbolizes love and romance in Hawaiian culture.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <div id="birdofparadise-page" class="info-page">
+    <h2>Bird of Paradise</h2>
+    <p>The Bird of Paradise has bright orange and blue petals that look like a tropical bird in flight. It represents joy and paradise, and it grows well in warm climates.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <div id="hibiscus-page" class="info-page">
+    <h2>Hibiscus</h2>
+    <p>The Hibiscus is Hawaii’s state flower. It comes in many colors and has large, beautiful petals. It symbolizes delicate beauty and is often worn behind the ear.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <div id="naupaka-page" class="info-page">
+    <h2>Naupaka</h2>
+    <p>Naupaka is a unique flower that looks like half a blossom. One type grows near the beach and another in the mountains. Legend says they are two lovers separated forever, each half waiting for the other.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <div id="plumeria-page" class="info-page">
+    <h2>Plumeria</h2>
+    <p>Plumeria flowers are known for their soft pink petals with a red or yellow center. They are often used in leis and symbolize positivity, new beginnings, and beauty.</p>
+    <a href="#" class="back-button" onclick="goBack()">Back</a>
+  </div>
+
+  <script>
+    function drawFlower(canvasId, color1, color2) {
+      const canvas = document.getElementById(canvasId);
+      const ctx = canvas.getContext('2d');
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const petals = 6;
+
+      for (let i = 0; i < petals; i++) {
+        const angle = (i * 2 * Math.PI) / petals;
+        const x = centerX + Math.cos(angle) * 20;
+        const y = centerY + Math.sin(angle) * 20;
+        ctx.beginPath();
+        ctx.fillStyle = color1;
+        ctx.ellipse(x, y, 15, 25, angle, 0, 2 * Math.PI);
+        ctx.fill();
+      }
+
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = color2;
+      ctx.fill();
+    }
+
+    // Draw flower icons
+    drawFlower('puakenikeni', '#ffcc80', '#ffb300');
+    drawFlower('pikake', '#ffffff', '#c0c0c0');
+    drawFlower('birdofparadise', '#ff7043', '#1976d2');
+    drawFlower('hibiscus', '#e53935', '#fdd835');
+    drawFlower('naupaka', '#ffffff', '#fff176');
+    drawFlower('plumeria', '#f48fb1', '#c2185b');
+
+    function spinAndShow(flower) {
+      const canvas = document.getElementById(flower);
+      canvas.classList.add('spin');
+      setTimeout(() => {
+        canvas.classList.remove('spin');
+        showPage(flower);
+      }, 1000);
+    }
+
+    function showPage(flower) {
+      document.getElementById('main-page').style.display = 'none';
+      document.getElementById(flower + '-page').style.display = 'block';
+    }
+
+    function goBack() {
+      const pages = document.querySelectorAll('.info-page');
+      pages.forEach(page => page.style.display = 'none');
+      document.getElementById('main-page').style.display = 'grid';
+    }
+  </script>
+</body>
+</html>
